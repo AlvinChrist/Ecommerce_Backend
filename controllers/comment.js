@@ -1,22 +1,17 @@
 import ProductComment from "../models/commentModel.js"
-import Product from "../models/productModel.js"
 import User from "../models/userModel.js"
-import Sequelize  from "sequelize"
 
 export const getAllComment = async (req, res) => {
     try {
         const comments = await ProductComment.findAll({
             include: [
                 {
-                    model: Product,
-                    where: {
-                        productId: req.params.id
+                    model: User,
+                    attributes: {
+                        exclude: ['password','refresh_token']
                     }
-                }, 
-                {
-                    model: User
                 }
-            ]
+            ],
         })
         res.json({comments: comments})
     } catch (error) {
@@ -32,8 +27,12 @@ export const postComment = async(req, res) => {
             userId: req.body.userId,
             productId: req.body.productId,
             commentText: req.body.commentText
+        }).then((result) => {
+            res.json({
+                message: "Comment Posted!",
+                result: result
+        })
         });
-        res.json({message: "Comment Posted!"})
     } catch (error) {
         console.log(error)
     }
