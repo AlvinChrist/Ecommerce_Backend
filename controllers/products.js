@@ -16,9 +16,10 @@ export const getAllProducts = async (req, res)=>{
     const size = parseInt(req.query.size)
     var whereStatement = {};
     try{
-        if(req.query.filterBrand) whereStatement.productBrand = req.query.filterBrand
+        if(req.query.filterBrand) whereStatement.productBrand = JSON.parse(req.query.filterBrand)
+        if(whereStatement.productBrand.length === 0) delete whereStatement.productBrand
     }catch{
-
+        if(req.query.filterBrand) whereStatement.productBrand = req.query.filterBrand
     }
     if(req.query.filterCategory) whereStatement.productCategory = req.query.filterCategory
     // if (req.query.filterType){

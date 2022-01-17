@@ -1,73 +1,55 @@
 import express from "express";
-import { verifyToken } from "../middleware/verifyToken.js";
-import uploadFile from "../middleware/upload.js"
-import uploadAvatar from "../middleware/uploadAvatar.js";
-import { 
-    getAllProducts,
-    getProduct,
-    createProduct,
-    updateProduct,
-    destroyProduct
-} from "../controllers/products.js";
-
-import {
-    getGallery,
-    createImage,
-    destroyImage,
-    updateUsedImage
-} from "../controllers/gallery.js";
-
-import { 
-    getAllComment,
-    postComment,
-    editComment,
-    destroyComment 
-} from "../controllers/comment.js";
-
-import {
-    ratingProduct,
-    getRating,
-    getRatingUser,
-} from "../controllers/rating.js"
-
-import {
-    getAllDiscount,
-    setDiscount
-} from "../controllers/discount.js"
-
-import {
-    addToWishlist,
-    getUserWishlist
-} from "../controllers/wishlist.js"
-
 import {
     addToCart,
     getUserCart,
-    removefromCart,
-} from "../controllers/cart.js"
-
+    removefromCart
+} from "../controllers/cart.js";
+import {
+    destroyComment, editComment, getAllComment,
+    postComment
+} from "../controllers/comment.js";
+import {
+    getAllDiscount,
+    setDiscount
+} from "../controllers/discount.js";
+import {
+    createImage,
+    destroyImage, getGallery, updateUsedImage
+} from "../controllers/gallery.js";
+import {
+    createProduct, destroyProduct, getAllProducts,
+    getProduct, updateProduct
+} from "../controllers/products.js";
+import {
+    getRating,
+    getRatingUser, ratingProduct
+} from "../controllers/rating.js";
+import { refreshToken } from "../controllers/refreshToken.js";
 import {
     addTransaction,
-    getAllTransaction,
-    getUserTransaction,
-    getTransactionDetail
-} from "../controllers/transaction.js"
-
+    getAllTransaction, getTransactionDetail, getUserTransaction
+} from "../controllers/transaction.js";
 import {
     getAllUser,
-    getUserById,
-    register,
-    login,
-    logout
+    getUserById, login,
+    logout, register,
+    updateUserProfile
 } from "../controllers/user.js";
-
-import { refreshToken } from "../controllers/refreshToken.js"
+import {
+    addToWishlist,
+    getUserWishlist,
+    removefromWishlist
+} from "../controllers/wishlist.js";
+import uploadFile from "../middleware/upload.js";
+import uploadAvatar from "../middleware/uploadAvatar.js";
+import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
 //Main Routing
 router.get('/users', verifyToken, getAllUser);
 router.get('/user/:id', verifyToken, getUserById);
+router.put('/user/:id', verifyToken, uploadAvatar.single("file"), updateUserProfile);
 router.get('/token', refreshToken);
 router.post('/user', uploadAvatar.single("file"),register);
 router.post('/login', login);
@@ -110,10 +92,12 @@ router.put('/product/:id/discount', setDiscount)
 //Wishlist Routing
 router.post('/wishlist', addToWishlist)
 router.get('/user/:id/wishlist', getUserWishlist)
+router.delete('/user/:userId/product/:productId', removefromWishlist)
 
 //Cart Routing
 router.post('/cart', addToCart)
 router.get('/user/:id/cart', getUserCart)
+router.get('/user/:userId/product/:productId', removefromCart)
 
 //Transaction Routing
 router.post('/transaction', addTransaction)

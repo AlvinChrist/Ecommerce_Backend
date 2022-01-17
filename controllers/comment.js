@@ -1,4 +1,5 @@
 import ProductComment from "../models/commentModel.js"
+import Product from "../models/productModel.js"
 import User from "../models/userModel.js"
 
 export const getAllComment = async (req, res) => {
@@ -9,6 +10,12 @@ export const getAllComment = async (req, res) => {
                     model: User,
                     attributes: {
                         exclude: ['password','refresh_token']
+                    }
+                },
+                {
+                    model: Product,
+                    where: {
+                        productId: req.params.id
                     }
                 }
             ],

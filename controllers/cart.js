@@ -102,6 +102,6 @@ export const removefromCart = async(req, res) => {
         })
         res.json({message: "This Item Removed From Your Wishlist"})
     } catch (error) {
-        res.json({message: "Something Wnet Wrong!", error: error.message})
+        res.json({message: "Something Went Wrong!", error: error.message})
     }
 }

@@ -58,12 +58,12 @@ export const removefromWishlist = async(req, res) => {
         try {
             await Wishlist.destroy({
                 where:{
-                    userId: req.body.userId,
-                    productId: req.body.productId
+                    userId: req.params.userId,
+                    productId: req.params.productId
                 }
             })
-            res.json({message: "This Item Removed From Your Wishlist"})
+            res.json({message: "Item Removed!"})
         } catch (error) {
-            res.json({message: "Something Wnet Wrong!", error: error.message})
+            res.json({message: "Something Went Wrong!", error: error.message})
         }
 }
