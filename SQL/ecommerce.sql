@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 13, 2022 at 03:24 AM
+-- Generation Time: Jan 18, 2022 at 01:07 PM
 -- Server version: 10.4.11-MariaDB-log
 -- PHP Version: 7.4.3
 
@@ -38,14 +38,9 @@ CREATE TABLE `cart` (
   `status` varchar(25) NOT NULL,
   `createdAt` date NOT NULL DEFAULT current_timestamp(),
   `updatedAt` date NOT NULL DEFAULT current_timestamp(),
-  `transactionId` int(10) NOT NULL
+  `transactionId` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Truncate table before insert `cart`
---
-
-TRUNCATE TABLE `cart`;
 -- --------------------------------------------------------
 
 --
@@ -55,7 +50,7 @@ TRUNCATE TABLE `cart`;
 DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
   `productId` int(10) NOT NULL,
-  `productName` varchar(25) NOT NULL,
+  `productName` varchar(255) NOT NULL,
   `productSummary` text NOT NULL,
   `productDesc` text NOT NULL,
   `productCategory` varchar(255) NOT NULL,
@@ -66,18 +61,15 @@ CREATE TABLE `product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Truncate table before insert `product`
---
-
-TRUNCATE TABLE `product`;
---
 -- Dumping data for table `product`
 --
 
-INSERT IGNORE INTO `product` (`productId`, `productName`, `productSummary`, `productDesc`, `productCategory`, `productBrand`, `productPrice`, `productStock`, `discountId`) VALUES
-(1, 'Testing Monitor', 'SummaryTESt', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ut est bibendum, vulputate felis quis, porta libero. Curabitur ut mauris sed ligula blandit porttitor eu eget elit. Praesent vulputate vestibulum fermentum. Sed efficitur quam enim, sit amet porttitor justo sollicitudin in. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce luctus eleifend semper. Suspendisse tempus turpis ac augue tincidunt pellentesque. Duis non tristique libero. In vitae nulla lectus. Ut arcu sem, convallis sed semper ac, bibendum id tortor. Aenean convallis pellentesque dolor eu gravida. Nunc commodo urna tempus mauris euismod congue.\r\n\r\nNulla leo odio, accumsan vitae mi at, porta consectetur neque. Sed non sem fermentum, ornare elit in, laoreet massa. Proin et sagittis risus. Suspendisse non porta purus. Vivamus sit amet ultrices urna, sed viverra sapien. Cras sed augue ut ante rutrum suscipit at ac augue. Morbi ultricies, tellus eu congue pellentesque, purus odio tristique lectus, a ultrices quam orci nec erat. Donec quis suscipit dui. Mauris semper, ex at consequat tempor, dolor felis lacinia felis, eu rutrum nisl libero sed lacus. Aliquam dapibus tellus eu augue egestas bibendum. In sed rutrum lacus. Fusce non pellentesque eros. Sed vel vestibulum augue.', 'Elektronik', 'Monitor', '1000000', 5, 4),
-(3, 'Asus Zen-Book Pro-Duo', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sit amet turpis ex. Curabitur fermentum interdum odio vitae sollicitudin. Proin nec viverra orci, vitae ullamcorper nisi. Proin vitae porttitor justo. Donec interdum sollicitudin velit, vel semper mi egestas ac. Suspendisse potenti. Proin commodo posuere enim dignissim aliquam. Vivamus ut aliquam lectus. Sed facilisis odio at elit feugiat venenatis. Integer fermentum suscipit tempus. Donec quis leo dui. Vivamus quis leo vitae risus pharetra pellentesque.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse bibendum pretium mauris rhoncus ornare. Phasellus sit amet efficitur dui. Phasellus hendrerit leo in pharetra fringilla. Sed ac erat diam. Fusce nec mattis urna. Suspendisse potenti. Cras fringilla, lorem ac iaculis pharetra, libero lorem interdum neque, at tristique augue felis sit amet elit. Donec tempor consectetur lectus in laoreet.\r\n\r\nVestibulum id facilisis massa, quis pharetra diam. Donec id rhoncus est, ut viverra leo. Cras vel fringilla diam. Fusce fringilla, enim a euismod molestie, purus metus faucibus ipsum, quis sodales massa ex ac orci. Donec magna dolor, malesuada eget gravida quis, mattis eget metus. Sed nec porttitor orci, eget maximus nisi. Donec fringilla dapibus erat, eget fermentum nibh interdum ac.\r\n\r\nMorbi laoreet odio eu lacus egestas semper. Fusce vestibulum mattis mi. Ut tincidunt fringilla ullamcorper. Vestibulum rhoncus at elit eget sodales. Quisque rhoncus risus lectus, eget aliquet elit efficitur a. Maecenas sit amet libero posuere, dictum dui rutrum, tincidunt massa. Donec scelerisque convallis nulla nec congue. Aenean semper, lacus et aliquam blandit, enim orci interdum lacus, a malesuada diam felis vitae lorem. Nulla placerat luctus libero. Ut ultricies finibus erat at venenatis. Vestibulum sollicitudin a turpis sed pretium.', 'Laptop', 'ASUS', '50000000', 5, NULL),
-(12, 'Testing', 'Lorem', 'Ipsum', 'Computer', 'Test', '2500000', 10, NULL);
+INSERT INTO `product` (`productId`, `productName`, `productSummary`, `productDesc`, `productCategory`, `productBrand`, `productPrice`, `productStock`, `discountId`) VALUES
+(1, 'Testing Monitor', 'Summary', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ut est bibendum, vulputate felis quis, porta libero. Curabitur ut mauris sed ligula blandit porttitor eu eget elit. Praesent vulputate vestibulum fermentum. Sed efficitur quam enim, sit amet porttitor justo sollicitudin in. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce luctus eleifend semper. Suspendisse tempus turpis ac augue tincidunt pellentesque. Duis non tristique libero. In vitae nulla lectus. Ut arcu sem, convallis sed semper ac, bibendum id tortor. Aenean convallis pellentesque dolor eu gravida. Nunc commodo urna tempus mauris euismod congue.\r\n\r\nNulla leo odio, accumsan vitae mi at, porta consectetur neque. Sed non sem fermentum, ornare elit in, laoreet massa. Proin et sagittis risus. Suspendisse non porta purus. Vivamus sit amet ultrices urna, sed viverra sapien. Cras sed augue ut ante rutrum suscipit at ac augue. Morbi ultricies, tellus eu congue pellentesque, purus odio tristique lectus, a ultrices quam orci nec erat. Donec quis suscipit dui. Mauris semper, ex at consequat tempor, dolor felis lacinia felis, eu rutrum nisl libero sed lacus. Aliquam dapibus tellus eu augue egestas bibendum. In sed rutrum lacus. Fusce non pellentesque eros. Sed vel vestibulum augue.', 'Elektronik', 'Monitor', '1000000', 5, NULL),
+(3, 'Asus Zen-Book Pro-Duo', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sit amet turpis ex. Curabitur fermentum interdum odio vitae sollicitudin. Proin nec viverra orci, vitae ullamcorper nisi. Proin vitae porttitor justo. Donec interdum sollicitudin velit, vel semper mi egestas ac. Suspendisse potenti. Proin commodo posuere enim dignissim aliquam. Vivamus ut aliquam lectus. Sed facilisis odio at elit feugiat venenatis. Integer fermentum suscipit tempus. Donec quis leo dui. Vivamus quis leo vitae risus pharetra pellentesque.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse bibendum pretium mauris rhoncus ornare. Phasellus sit amet efficitur dui. Phasellus hendrerit leo in pharetra fringilla. Sed ac erat diam. Fusce nec mattis urna. Suspendisse potenti. Cras fringilla, lorem ac iaculis pharetra, libero lorem interdum neque, at tristique augue felis sit amet elit. Donec tempor consectetur lectus in laoreet.\r\n\r\nVestibulum id facilisis massa, quis pharetra diam. Donec id rhoncus est, ut viverra leo. Cras vel fringilla diam. Fusce fringilla, enim a euismod molestie, purus metus faucibus ipsum, quis sodales massa ex ac orci. Donec magna dolor, malesuada eget gravida quis, mattis eget metus. Sed nec porttitor orci, eget maximus nisi. Donec fringilla dapibus erat, eget fermentum nibh interdum ac.\r\n\r\nMorbi laoreet odio eu lacus egestas semper. Fusce vestibulum mattis mi. Ut tincidunt fringilla ullamcorper. Vestibulum rhoncus at elit eget sodales. Quisque rhoncus risus lectus, eget aliquet elit efficitur a. Maecenas sit amet libero posuere, dictum dui rutrum, tincidunt massa. Donec scelerisque convallis nulla nec congue. Aenean semper, lacus et aliquam blandit, enim orci interdum lacus, a malesuada diam felis vitae lorem. Nulla placerat luctus libero. Ut ultricies finibus erat at venenatis. Vestibulum sollicitudin a turpis sed pretium.', 'Laptop', 'ASUS', '50000000', 5, 4),
+(12, 'Gaming PC', 'Lorem', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ut est bibendum, vulputate felis quis, porta libero. Curabitur ut mauris sed ligula blandit porttitor eu eget elit. Praesent vulputate vestibulum fermentum. Sed efficitur quam enim, sit amet porttitor justo sollicitudin in. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce luctus eleifend semper. Suspendisse tempus turpis ac augue tincidunt pellentesque. Duis non tristique libero. In vitae nulla lectus. Ut arcu sem, convallis sed semper ac, bibendum id tortor. Aenean convallis pellentesque dolor eu gravida. Nunc commodo urna tempus mauris euismod congue.\n\nNulla leo odio, accumsan vitae mi at, porta consectetur neque. Sed non sem fermentum, ornare elit in, laoreet massa. Proin et sagittis risus. Suspendisse non porta purus. Vivamus sit amet ultrices urna, sed viverra sapien. Cras sed augue ut ante rutrum suscipit at ac augue. Morbi ultricies, tellus eu congue pellentesque, purus odio tristique lectus, a ultrices quam orci nec erat. Donec quis suscipit dui. Mauris semper, ex at consequat tempor, dolor felis lacinia felis, eu rutrum nisl libero sed lacus. Aliquam dapibus tellus eu augue egestas bibendum. In sed rutrum lacus. Fusce non pellentesque eros. Sed vel vestibulum augue.', 'Computer', 'ASUS', '2500000', 10, NULL),
+(13, 'ASUS RGB Mechanical Gaming Keyboard', 'Gaming Keyboard for PC | Customizable Badge, USB Pass-Through | Media Controls', 'PRO GAMERS PREFERRED - ASUS ROG Strix Flare Mechanical Gaming Keyboard is made of German Cherry MX Blue switches that offer faster response time, enhanced gaming performance & tactile feedback with each keystroke\r\nANTI-GHOSTING - 100% anti-ghosting with super-fast response, onboard memory, on-the fly macro recordings, Windows lock key, under-keyboard cable routing for uninterrupted video games sessions – it’s got it all!\r\nUNIQUELY YOURS - With ASUS Aura Sync, create your own style utilizing the entire color spectrum and a range of dynamic lighting effects, and bring your RGB keyboard to life with vibrant per-key backlight and underglow on the sides\r\nCUSTOMIZE YOUR LOGO - Flare up your RGB keyboard by creating your own personalized logo with the provided black acrylic badge. As soon as you insert it into this wired gamer keyboard, it\'ll light up with Aura\r\nDEDICATED KEYBOARD MEDIA CONTROLS - Control your audio with instant media keys & smooth-scrolling volume wheel on upper left on this PC gaming keyboard. Includes USB PASSTHROUGH for easy connectivity & a DETACHABLE WRIST-REST for extra comfort', 'Keyboard', 'Asus', '2455018', 0, NULL),
+(14, 'Acer Aspire E14 Core i5 7', 'Laptop Gaming Desain Acer Aspire E14 Core i5 7200U Nvidia Slim Mulus', 'Core i5 7200U\r\nRam 8gb DDR4\r\nHDD 1000gb\r\nLayar 14inc HD\r\nDual VGA Nvidia Geforce 940MX 2gb\r\nWebcam\r\nDVD\r\nHDMI\r\nBody Slim\r\nMulus', 'Laptop', 'Acer', '5600000', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -96,20 +88,23 @@ CREATE TABLE `product_comment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Truncate table before insert `product_comment`
---
-
-TRUNCATE TABLE `product_comment`;
---
 -- Dumping data for table `product_comment`
 --
 
-INSERT IGNORE INTO `product_comment` (`commentId`, `userId`, `productId`, `commentText`, `createdAt`, `updatedAt`) VALUES
+INSERT INTO `product_comment` (`commentId`, `userId`, `productId`, `commentText`, `createdAt`, `updatedAt`) VALUES
 (2, 1, 1, 'First Content!', '2022-01-05 00:12:14', '2022-01-09 12:19:25'),
 (5, 2, 1, 'Waiting for your next! my man', '2022-01-06 16:22:15', '2022-01-09 09:04:31'),
 (6, 1, 1, 'Thanks Man!', '2022-01-06 16:23:31', '2022-01-06 16:23:31'),
 (8, 2, 1, 'Your Welcome', '2022-01-07 21:06:51', '2022-01-07 21:06:51'),
-(14, 3, 1, 'Test', '2022-01-09 13:51:20', '2022-01-09 13:51:20');
+(14, 3, 1, 'Test', '2022-01-09 13:51:20', '2022-01-09 13:51:20'),
+(15, 6, 1, 'okay', '2022-01-13 14:38:18', '2022-01-13 14:38:18'),
+(16, 5, 3, 'Test', '2022-01-15 12:23:51', '2022-01-15 12:23:51'),
+(17, 5, 13, 'Great!', '2022-01-15 12:24:11', '2022-01-15 12:24:11'),
+(18, 6, 3, 'Test', '2022-01-15 12:24:36', '2022-01-15 12:24:36'),
+(19, 5, 12, 'Test', '2022-01-16 04:52:20', '2022-01-16 04:52:20'),
+(20, 6, 1, 'Tes komen', '2022-01-17 14:27:25', '2022-01-17 14:27:25'),
+(21, 6, 1, 'Testing', '2022-01-17 14:56:13', '2022-01-17 14:56:13'),
+(22, 5, 1, 'komen admin warna merah', '2022-01-17 19:14:05', '2022-01-17 19:14:05');
 
 -- --------------------------------------------------------
 
@@ -127,15 +122,10 @@ CREATE TABLE `product_discount` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Truncate table before insert `product_discount`
---
-
-TRUNCATE TABLE `product_discount`;
---
 -- Dumping data for table `product_discount`
 --
 
-INSERT IGNORE INTO `product_discount` (`discountId`, `discountName`, `discountPercent`, `createdAt`, `updatedAt`) VALUES
+INSERT INTO `product_discount` (`discountId`, `discountName`, `discountPercent`, `createdAt`, `updatedAt`) VALUES
 (2, 'Diskon Akhir Tahun', 50, '2022-01-09 07:09:23', '2022-01-09 07:09:23'),
 (4, 'Diskon Awal Tahun', 60, '2022-01-09 18:36:28', '2022-01-09 18:36:28');
 
@@ -157,21 +147,19 @@ CREATE TABLE `product_gallery` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Truncate table before insert `product_gallery`
---
-
-TRUNCATE TABLE `product_gallery`;
---
 -- Dumping data for table `product_gallery`
 --
 
-INSERT IGNORE INTO `product_gallery` (`imageId`, `imageType`, `imageName`, `imagePath`, `createdAt`, `used`, `productId`) VALUES
+INSERT INTO `product_gallery` (`imageId`, `imageType`, `imageName`, `imagePath`, `createdAt`, `used`, `productId`) VALUES
 (1, 'image/jpeg', 'images.jpg', 'uploads/1641214251065-Testing Monitor-images.jpg', '2022-01-03 12:50:51', 'True', 1),
 (5, 'image/jpeg', 'download (3).jpg', 'uploads/1641587482180-Testing Monitor-download (3).jpg', '2022-01-07 20:31:22', 'False', 1),
-(6, 'image/jpeg', 'download (2).jpg', 'uploads/1641587488113-Testing Monitor-download (2).jpg', '2022-01-07 20:31:28', 'False', 1),
 (7, 'image/jpeg', 'produo.jpg', 'uploads/1641722909127-Asus Zen-Book Pro-Duo-produo.jpg', '2022-01-09 10:08:30', 'True', 3),
 (8, 'image/jpeg', 'download (1).jpg', 'uploads/1641725685502-Asus Zen-Book Pro-Duo-download (1).jpg', '2022-01-09 10:54:45', 'False', 3),
-(17, 'image/png', 'download.png', 'uploads/1641992044302-Testing-download.png', '2022-01-12 12:54:04', 'True', 12);
+(26, 'image/jpeg', '1641587310652-Testing Monitor-download (2).jpg', 'uploads/1642090360738-undefined-1641587310652-Testing Monitor-download (2).jpg', '2022-01-13 16:12:40', 'False', 1),
+(27, 'image/png', '1642125737123-undefined-inventory.png', 'uploads/1642245253977-undefined-1642125737123-undefined-inventory.png', '2022-01-15 11:14:14', 'False', 12),
+(29, 'image/jpeg', '1642125822202-undefined-20f535c616bbe807a1166e5661', 'uploads/1642247117834-undefined-1642125822202-undefined-20f535c616bbe807a1166e5661b396fd.jpg', '2022-01-15 11:45:17', 'True', 12),
+(30, 'image/jpeg', '91DbiglR1qL._AC_SL1500_.jpg', 'uploads/1642249163283-ASUS RGB Mechanical Gaming Keyboard - ROG Strix Flare-91DbiglR1qL._AC_SL1500_.jpg', '2022-01-15 12:19:23', 'True', 13),
+(31, 'image/jpeg', 'jalankan-aktivitasmu-dengan-aspire-e14-.jpg', 'uploads/1642249644741-Acer Aspire E14 Core i5 7200U Nvidia-jalankan-aktivitasmu-dengan-aspire-e14-.jpg', '2022-01-15 12:27:24', 'True', 14);
 
 -- --------------------------------------------------------
 
@@ -190,20 +178,15 @@ CREATE TABLE `product_rating` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Truncate table before insert `product_rating`
---
-
-TRUNCATE TABLE `product_rating`;
---
 -- Dumping data for table `product_rating`
 --
 
-INSERT IGNORE INTO `product_rating` (`productRatingId`, `userId`, `productId`, `productRating`, `createdAt`, `updatedAt`) VALUES
+INSERT INTO `product_rating` (`productRatingId`, `userId`, `productId`, `productRating`, `createdAt`, `updatedAt`) VALUES
 (7, 2, 1, 4, '2022-01-08 17:25:25', '2022-01-09 09:01:56'),
 (8, 3, 1, 5, '2022-01-08 18:03:40', '2022-01-09 13:52:19'),
 (9, 6, 3, 4, '2022-01-12 14:32:08', '2022-01-12 15:16:17'),
 (10, 6, 12, 5, '2022-01-12 15:03:32', '2022-01-12 15:16:13'),
-(11, 6, 1, 4, '2022-01-12 15:16:03', '2022-01-12 15:16:03');
+(11, 6, 1, 5, '2022-01-12 15:16:03', '2022-01-17 16:10:49');
 
 -- --------------------------------------------------------
 
@@ -220,11 +203,6 @@ CREATE TABLE `transaction` (
   `transactionPoint` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Truncate table before insert `transaction`
---
-
-TRUNCATE TABLE `transaction`;
 -- --------------------------------------------------------
 
 --
@@ -242,27 +220,23 @@ CREATE TABLE `user` (
   `password` varchar(255) NOT NULL,
   `createdAt` date NOT NULL DEFAULT current_timestamp(),
   `updatedAt` date NOT NULL DEFAULT current_timestamp(),
-  `userAvatar` varchar(255) NOT NULL,
+  `userAvatar` varchar(255) DEFAULT NULL,
   `role` enum('Admin','User') NOT NULL,
   `refresh_token` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Truncate table before insert `user`
---
-
-TRUNCATE TABLE `user`;
---
 -- Dumping data for table `user`
 --
 
-INSERT IGNORE INTO `user` (`userId`, `name`, `email`, `phoneNo`, `address`, `userName`, `password`, `createdAt`, `updatedAt`, `userAvatar`, `role`, `refresh_token`) VALUES
+INSERT INTO `user` (`userId`, `name`, `email`, `phoneNo`, `address`, `userName`, `password`, `createdAt`, `updatedAt`, `userAvatar`, `role`, `refresh_token`) VALUES
 (1, 'Arruhu Nahya', 'Arruhu@mail.com', '08528449919104', 'jl.stasiun, kp.lalang', 'Arruhu0821', '$2b$10$1MKSudulHlTp46CnuwbMgO/XhgCt8GPRaU60uxiGjx9H1VekLJy/G', '2022-01-03', '2022-01-09', 'avatars/Admin.jpg', 'Admin', NULL),
 (2, 'Lorem Ipsum', 'lorem@mail.com', '0865659911', 'Hell\'s Road', 'loremCool', '$2b$10$3BTgj01PYkgaW.NPC55WyeKK/Rx/tPLVGllJCBNEh1YETHSoN/ycS', '2022-01-06', '2022-01-09', 'avatars/Avatar-loremCool.png', 'User', NULL),
 (3, 'Eric Martin', 'eric@mail.com', '9734100101', 'Unknown', 'ericm', '$2b$10$nSOMj/KcK.vu76DBmqfyNunXRRfal.LdyRtZ3CM6xyUzc2NIWWhd2', '2022-01-08', '2022-01-09', 'avatars/ericm-Mr-Big_1440-e1497560284421-1.jpg', 'User', NULL),
 (4, 'Alvin Christ', 'alvinardiansyah2002@gmail.com', '08991720400', 'Test', 'alvinchrist', '$2b$10$Kcd45bzp4sEpDWD5ElXpB.9z/0PFQwp0e9nHn/Oj2D3bDOt625MZ2', '2022-01-09', '2022-01-11', '', 'Admin', NULL),
-(5, 'Admin', 'admin@gmail.com', '0000', '-', 'admin', '$2b$10$PWzsmU1g3QopvjIDMM2xOuxpbpiAQZE9AI5rh5tDvnPK32r.uHQ8e', '2022-01-11', '2022-01-12', '', 'Admin', NULL),
-(6, 'User', 'user@gmail.com', '0000', '-', 'user', '$2b$10$EnJqSuzkqgRa30OoX4yxR.UjEll1lc7Z/tcoBmGKbs8F1C6PL1yv6', '2022-01-11', '2022-01-12', '', 'User', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInVzZXJOYW1lIjoidXNlciIsImVtYWlsIjoidXNlckBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImlhdCI6MTY0MjAxMDc5MSwiZXhwIjoxNjQyMDk3MTkxfQ.GBBmfPtVsIndh4SjofdfZzPoh36ijt7XELjDC6p_LSQ');
+(5, 'Admin', 'admin@gmail.com', '0000', '-', 'admin', '$2b$10$PWzsmU1g3QopvjIDMM2xOuxpbpiAQZE9AI5rh5tDvnPK32r.uHQ8e', '2022-01-11', '2022-01-18', '', 'Admin', NULL),
+(6, 'User', 'user@gmail.com', '0000', '-', 'user', '$2b$10$EnJqSuzkqgRa30OoX4yxR.UjEll1lc7Z/tcoBmGKbs8F1C6PL1yv6', '2022-01-11', '2022-01-17', '', 'User', NULL),
+(7, 'Alvin', 'alvin@test.com', '0899', 'a', 'alvin', '$2b$10$2s6g4TE5SV/npWUu4tmDXu5jLTkHg5y3PwxvsjjuS5LkObyqsTc5e', '2022-01-17', '2022-01-17', 'avatars/unknown.png', 'User', NULL);
 
 -- --------------------------------------------------------
 
@@ -280,16 +254,12 @@ CREATE TABLE `wishlist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Truncate table before insert `wishlist`
---
-
-TRUNCATE TABLE `wishlist`;
---
 -- Dumping data for table `wishlist`
 --
 
-INSERT IGNORE INTO `wishlist` (`userId`, `productId`, `productQty`, `createdAt`, `updatedAt`) VALUES
-(2, 1, 5, '2022-01-09 06:39:21', '2022-01-09 06:39:39');
+INSERT INTO `wishlist` (`userId`, `productId`, `productQty`, `createdAt`, `updatedAt`) VALUES
+(2, 1, 5, '2022-01-09 06:39:21', '2022-01-09 06:39:39'),
+(6, 1, 0, '2022-01-17 18:40:45', '2022-01-17 18:40:45');
 
 --
 -- Indexes for dumped tables
@@ -367,13 +337,13 @@ ALTER TABLE `wishlist`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `productId` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `productId` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `product_comment`
 --
 ALTER TABLE `product_comment`
-  MODIFY `commentId` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `commentId` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `product_discount`
@@ -385,7 +355,7 @@ ALTER TABLE `product_discount`
 -- AUTO_INCREMENT for table `product_gallery`
 --
 ALTER TABLE `product_gallery`
-  MODIFY `imageId` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `imageId` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `product_rating`
@@ -403,7 +373,7 @@ ALTER TABLE `transaction`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `userId` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `userId` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables

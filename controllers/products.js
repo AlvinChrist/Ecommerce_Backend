@@ -137,8 +137,9 @@ export const createProduct = async (req, res)=>{
             }] 
         }, {
             include: ProductImage
+        }).then((resp) => {
+            res.json({message: "Product Added!", product: resp   })
         });
-        res.json({message: "Product Added!"})
     } catch (error) {
         res.json({message: error.message})
     }

@@ -10,7 +10,8 @@ import {
 } from "../controllers/comment.js";
 import {
     getAllDiscount,
-    setDiscount
+    setDiscount,
+    destroyDiscount
 } from "../controllers/discount.js";
 import {
     createImage,
@@ -51,7 +52,7 @@ router.get('/users', verifyToken, getAllUser);
 router.get('/user/:id', verifyToken, getUserById);
 router.put('/user/:id', verifyToken, uploadAvatar.single("file"), updateUserProfile);
 router.get('/token', refreshToken);
-router.post('/user', uploadAvatar.single("file"),register);
+router.post('/user',register);
 router.post('/login', login);
 router.delete('/logout', logout);
 
@@ -88,6 +89,7 @@ router.get('/product/:productId/rating/user/:userId',getRatingUser)
 //Discount Routing
 router.get('/discounts', getAllDiscount)
 router.put('/product/:id/discount', setDiscount)
+router.delete('/product/:id/discount', destroyDiscount)
 
 //Wishlist Routing
 router.post('/wishlist', addToWishlist)
@@ -97,7 +99,7 @@ router.delete('/user/:userId/product/:productId', removefromWishlist)
 //Cart Routing
 router.post('/cart', addToCart)
 router.get('/user/:id/cart', getUserCart)
-router.get('/user/:userId/product/:productId', removefromCart)
+router.delete('/cart/user/:userId/product/:productId', removefromCart)
 
 //Transaction Routing
 router.post('/transaction', addTransaction)
