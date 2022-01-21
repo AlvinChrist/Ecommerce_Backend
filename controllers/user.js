@@ -15,7 +15,6 @@ export const getAllUser = async(req, res)=>{
 export const getUserById = async(req, res) => {
     try{
         const user = await User.findAll({
-            attributes: { exclude: ['password', 'refresh_token']},
             where: {
                 userId: req.params.id
             }
@@ -39,8 +38,7 @@ export const register = async(req, res)=>{
                 address: req.body.address,
                 userName: req.body.userName,
                 password: hashPassword,
-                userAvatar: 'avatars/unknown.png',
-                // userAvatar: 'avatars/'+req.file.filename,
+                userAvatar: 'avatars/'+req.file.filename,
                 role: req.body.role
             }).then((resp) => {
                 console.log(resp)
@@ -67,12 +65,12 @@ export const login = async(req, res)=>{
         const match = await bcrypt.compare(req.body.password, user[0].password);
         console.log(match)
         if(!match) return res.status(400).json({message: "Wrong Password!"})
-        delete user[0].dataValues.password
         const userId = user[0].userId
+        delete user[0].dataValues.password
         const accessToken = jwt.sign(user[0].dataValues, process.env.ACCESS_TOKEN_SECRET, {
             expiresIn: '20s'
         });
-        
+
         const refreshToken = jwt.sign(user[0].dataValues, process.env.REFRESH_TOKEN_SECRET, {
             expiresIn: '1d'
         });
@@ -120,10 +118,11 @@ export const updateUserProfile = async(req, res)=>{
             userId: req.params.id
         }
     })
+    let hashPassword
     if(req.body.oldPassword){
         const match = await bcrypt.compare(req.body.oldPassword, user.password);    
         if (!match) {
-            if(req.file !== undefined)
+            if(req.file != undefined)
                 fs.unlink(__dirname + "/resources/static/assets/avatars/" + req.file.filename, (err => {
                     if (err) console.log(err);
                 }))
@@ -131,113 +130,60 @@ export const updateUserProfile = async(req, res)=>{
         }
         const salt = await bcrypt.genSalt();
         if(req.body.newPassword){
-            const hashPassword = await bcrypt.hash(req.body.newPassword, salt);
-            User.findAndCountAll({ where: {email: req.body.email}}).then((data) => {
-                if(data.count == 0 || data.rows[0].userId == req.params.id){
-                    let _data = {}
-                    if(req.file !== undefined){
-                        _data = {
-                            name: req.body.name,
-                            email: req.body.email,
-                            phoneNo: req.body.phoneNo,
-                            address: req.body.address,
-                            userName: req.body.userName,
-                            password: hashPassword,
-                            userAvatar: 'avatars/'+req.file.filename,
-                            role: req.body.role
-                        }
-                        if (user.userAvatar != 'avatars/'+req.file.filename){
-                            fs.unlink(__dirname + "/resources/static/assets/" + user.userAvatar, (err => {
-                                if (err) console.log(err);
-                            }))
-                        }
-                    }
-                    else{
-                        _data = {
-                            name: req.body.name,
-                            email: req.body.email,
-                            phoneNo: req.body.phoneNo,
-                            address: req.body.address,
-                            userName: req.body.userName,
-                            password: hashPassword,
-                            role: req.body.role
-                        }
-                    }
-                    User.update(_data, {
-                        where: {
-                            userId: req.params.id
-                        }
-                    }).then((resp) => {
-                        console.log(resp)
-                        res.json({message: 'Profile Updated!'})
-                    }).catch((err) => {
-                        res.json({message: "Something Went Wrong", error: err.message})
-                    });
+            hashPassword = await bcrypt.hash(req.body.newPassword, salt);
+        } else {
+            hashPassword = user.password
+        }
+    } else {
+        hashPassword = user.password
+    }
+    User.findAndCountAll({ where: {email: req.body.email}}).then((data) => {
+        if(data.count == 0 || data.rows[0].userId == req.params.id){
+    
+            let newAvatar
+
+            if (req.file == undefined){
+                newAvatar = user.userAvatar
+            } else {
+                newAvatar = 'avatars/'+req.file.filename
+
+                if (user.userAvatar != 'avatars/'+req.file.filename){
+                    fs.unlink(__dirname + "/resources/static/assets/" + user.userAvatar, (err => {
+                        if (err) console.log(err);
+                    }))
                 }
-                else{
-                    if (data.rows[0].userId != req.params.id && user.userAvatar != 'avatars/'+req.file.filename){
-                        fs.unlink(__dirname + "/resources/static/assets/avatars/" + req.file.filename, (err => {
-                            if (err) console.log(err);
-                        }))
-                    }
-                    res.status(409).json({message: `User with email: '${req.body.email}' exists!`})
+            }
+            
+            User.update({
+                name: req.body.name,
+                email: req.body.email,
+                phoneNo: req.body.phoneNo,
+                address: req.body.address,
+                userName: req.body.userName,
+                password: hashPassword,
+                userAvatar: newAvatar,
+                role: req.body.role
+            }, {
+                where: {
+                    userId: req.params.id
                 }
-            })
+            }).then((resp) => {
+                console.log(resp)
+                res.json({message: 'Profile Updated!'})
+            }).catch((err) => {
+                res.json({message: "Something Went Wrong", error: err.message})
+            });
         }
         else{
-            res.status(500).json({message: `New password must be > 8 characters!`})
-        }
-        
-    }
-    else{
-        User.findAndCountAll({ where: {email: req.body.email}}).then((data) => {
-            if(data.count == 0 || data.rows[0].userId == req.params.id){
-                let _data = {}
-                if(req.file !== undefined){
-                    _data = {
-                        name: req.body.name,
-                        email: req.body.email,
-                        phoneNo: req.body.phoneNo,
-                        address: req.body.address,
-                        userName: req.body.userName,
-                        userAvatar: 'avatars/' + (req.file)?req.file.filename:'unknown.png',
-                        role: req.body.role
-                    }
-                    if (user.userAvatar !== 'avatars/'+req.file.filename){
-                        fs.unlink(__dirname + "/resources/static/assets/" + user.userAvatar, (err => {
-                            if (err) console.log(err);
-                        }))
-                    }
-                }
-                else{
-                    _data = {
-                        name: req.body.name,
-                        email: req.body.email,
-                        phoneNo: req.body.phoneNo,
-                        address: req.body.address,
-                        userName: req.body.userName,
-                        role: req.body.role
-                    }
-                }
-                User.update(_data, {
-                    where: {
-                        userId: req.params.id
-                    }
-                }).then((resp) => {
-                    console.log(resp)
-                    res.json({message: 'Profile Updated!' })
-                }).catch((err) => {
-                    res.json({message: "Something Went Wrong", error: err.message})
-                });
-            }
-            else{
+            if (req.file !== undefined){
                 if (data.rows[0].userId != req.params.id && user.userAvatar != 'avatars/'+req.file.filename){
                     fs.unlink(__dirname + "/resources/static/assets/avatars/" + req.file.filename, (err => {
                         if (err) console.log(err);
                     }))
                 }
-                res.status(409).json({message: `User with email: '${req.body.email}' exists!`})
             }
-        })
-    }
+            res.status(409).json({message: `Email: '${req.body.email}' was Taken by Another User!`})
+        }
+    })
+    
 }

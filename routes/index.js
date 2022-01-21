@@ -9,13 +9,12 @@ import {
     postComment
 } from "../controllers/comment.js";
 import {
-    getAllDiscount,
-    setDiscount,
-    destroyDiscount
+    destroyDiscount, getAllDiscount,
+    setDiscount
 } from "../controllers/discount.js";
 import {
     createImage,
-    destroyImage, getGallery, updateUsedImage
+    destroyImage, getAllGallery, getGallery, updateUsedImage
 } from "../controllers/gallery.js";
 import {
     createProduct, destroyProduct, getAllProducts,
@@ -69,6 +68,7 @@ router.delete('/products/:id', verifyToken, destroyProduct);
 
 
 //Gallery Routing
+router.get('/gallery', getAllGallery)
 router.get('/gallery/product/:id', getGallery);
 router.post('/gallery', verifyToken, uploadFile.single("file"), createImage);
 router.put('/product/:id/image', updateUsedImage)

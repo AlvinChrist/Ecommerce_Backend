@@ -34,6 +34,7 @@ export const getAllProducts = async (req, res)=>{
         whereStatement.productName = {[Op.like]: '%' + (req.query.searchedProduct) + '%'}
     }
     try {
+        let total = await Product.count()
         let products = await Product.findAndCountAll({
            include:[{
                 model: ProductImage,
@@ -63,22 +64,24 @@ export const getAllProducts = async (req, res)=>{
                 )
             }
         });
-
+        
         products.rows.forEach(product => {
             let rating_count = product.product_ratings.length
             let totalRating = 0
             product.product_ratings.forEach(rating => {
-               totalRating = totalRating + rating.productRating
+                totalRating = totalRating + rating.productRating
             })
             let finalRating = totalRating / rating_count
             product.setDataValue("finalRating", finalRating)
         });
-
         
-
+        
+        
         const brands = await Product.aggregate('productBrand', 'DISTINCT', { plain: false })
         const categories = await Product.aggregate('productCategory', 'DISTINCT', { plain: false })
-
+        
+        products.count = total
+        console.log(products.count)
         res.json({products: products, brands: brands, categories: categories})
     } catch (error) {
         res.json({message: error.message})

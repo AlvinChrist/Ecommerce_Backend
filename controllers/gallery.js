@@ -9,6 +9,14 @@ const operatorAliases = {
     $not: Op.not
 }
 
+export const getAllGallery = async (req, res) => {
+    try{
+        const galleries = await ProductImage.findAll()
+        res.json({gallery: galleries})
+    } catch(error) {
+        res.json({message: error.message})
+    }
+}
 export const getGallery = async (req, res)=>{
     try {
         const gallery = await ProductImage.findAndCountAll({
