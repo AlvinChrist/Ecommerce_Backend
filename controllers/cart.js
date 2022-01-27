@@ -45,7 +45,7 @@ export const getUserCart = async(req, res) => {
             ]
         }).then(items=> {
             if (items.length == 0){
-                res.json({wishlist: []})
+                res.json({cart: []})
             }
             items.forEach(function(item,idx,array){
                 ProductImage.findOne({

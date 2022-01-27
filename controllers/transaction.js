@@ -1,7 +1,6 @@
 import Cart from "../models/cartModel.js";
-import Transaction from "../models/transactionModel.js";
 import Product from "../models/productModel.js";
-import User from "../models/userModel.js";
+import Transaction from "../models/transactionModel.js";
 
 export const addTransaction = (req, res) => {
 
