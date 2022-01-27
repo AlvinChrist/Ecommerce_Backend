@@ -21,8 +21,7 @@ export const getGallery = async (req, res)=>{
     try {
         const gallery = await ProductImage.findAndCountAll({
            where: {
-               productId: req.params.id,
-               used: 'False'
+               productId: req.params.id
            }
         });
         

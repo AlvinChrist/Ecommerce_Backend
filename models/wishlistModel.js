@@ -1,5 +1,6 @@
 import Sequelize from "sequelize";
 import db from "../config/database.js";
+import ProductImage from "./galleryModel.js";
 import Product from "./productModel.js";
 import User from "./userModel.js"
 

@@ -21,7 +21,7 @@ const ProductRating = db.define('product_rating',{
         allowNull: false
     },
     productRating:{
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false
     }
 },{

@@ -33,7 +33,7 @@ const Product = db.define('product',{
         allowNull: false
     },
     productPrice:{
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     productStock:{

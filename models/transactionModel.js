@@ -21,7 +21,7 @@ const Transaction = db.define('transaction',{
         allowNull: false
     },
     amountPaid: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     createdAt:{

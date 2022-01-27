@@ -58,10 +58,7 @@ export const getAllProducts = async (req, res)=>{
         products.rows.forEach(product => {
             if (product.product_discount){
                 product.setDataValue("beforeDiscount", product.productPrice)
-                product.productPrice = String(
-                    parseInt(product.productPrice) - parseInt(product.productPrice) *
-                    product.product_discount.discountPercent / 100
-                )
+                product.productPrice = (100 - product.product_discount.discountPercent) / 100 * product.productPrice
             }
         });
         
