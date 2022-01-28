@@ -3,6 +3,7 @@ import Product from "../models/productModel.js";
 import Wishlist from "../models/wishlistModel.js";
 import ProductRating from "../models/ratingModel.js"
 import Discount from "../models/discountModel.js";
+import Sequelize  from "sequelize";
 
 export const getUserWishlist = async(req, res) => {
     try {
@@ -15,38 +16,42 @@ export const getUserWishlist = async(req, res) => {
                     model: Product,
                 },
             ],
-        }).then(items=> {
+        })
+        .then(items=> {
             if (items.length == 0){
                 res.json({wishlist: []})
             }
             items.forEach(function(item,idx,array){
-                ProductImage.findOne({
+                Product.findOne({
                     where: {
                         productId: item.productId,
-                        used: 'True'
-                    }
-                }).then(image=>{
-                    const img = {imagePath: image.imagePath}
+                    },
+                    include:[{
+                        model: ProductImage,
+                        where : {
+                            used: 'True'
+                        },
+                        required: false
+                    }, {
+                        model: Discount
+                    }, {
+                        model: ProductRating,
+                        attributes: ['productRatingId', 
+                            [Sequelize.fn('sum', Sequelize.col('productRating')), 'totalRating'],
+                            [Sequelize.fn('count', Sequelize.col('productRatingId')), 'count']
+                        ]
+                    }],
+                }).then(detail=>{
+                    let finalrating = detail.product_ratings[0].dataValues.totalRating / detail.product_ratings[0].dataValues.count
+                    item.product.setDataValue('finalRating', finalrating)
+                    
+                    const img = {imagePath: detail.product_galleries[0].imagePath}
                     item.product.setDataValue('product_galleries', [img])
-                })
-                ProductRating.findAll({
-                    where: {
-                        productId: item.productId
-                    }
-                }).then(ratings=>{
-                    const reducer = (prev, cur) => prev + cur.dataValues.productRating
-                    const acc = ratings.reduce(reducer,0) / ratings.length
-                    item.product.setDataValue('finalRating', acc) 
-                })
-                Discount.findOne({
-                    where: {
-                        discountId: item.product.discountId
-                    }
-                }).then(disc => {
+
                     if(item.product.discountId){
-                        item.product.setDataValue('product_discount', disc)
+                        item.product.setDataValue('product_discount', detail.product_discount)
                         item.product.setDataValue("beforeDiscount", item.product.productPrice)
-                        item.product.productPrice = (100 - disc.discountPercent) / 100 * item.product.productPrice    
+                        item.product.productPrice = (100 - detail.product_discount.discountPercent) / 100 * item.product.productPrice    
                     }
                 }).catch((err) => {
                     console.log(err)

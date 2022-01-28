@@ -48,23 +48,27 @@ export const getUserCart = async(req, res) => {
                 res.json({cart: []})
             }
             items.forEach(function(item,idx,array){
-                ProductImage.findOne({
+                Product.findOne({
                     where: {
-                        productId: item.productId,
-                        used: 'True'
-                    }
-                }).then(image=>{
-                    item.product.setDataValue('imagePath', image.imagePath)                         
-                })
-                Discount.findOne({
-                    where: {
-                        discountId: item.product.discountId
-                    }
-                }).then(disc => {
+                        productId: item.productId
+                    },
+                    include:[{
+                        model: ProductImage,
+                        where : {
+                            used: 'True'
+                        },
+                        required: false
+                    }, {
+                        model: Discount
+                    }],
+                }).then(detail=>{
+                    
+                    item.product.setDataValue('imagePath', detail.product_galleries[0].imagePath)  
+                    
                     if(item.product.discountId){
-                        item.product.setDataValue('product_discount', disc)
+                        item.product.setDataValue('product_discount', detail.product_discount)
                         item.product.setDataValue("beforeDiscount", item.product.productPrice)
-                        item.product.productPrice = (100 - disc.discountPercent) / 100 * item.product.productPrice    
+                        item.product.productPrice = (100 - detail.product_discount.discountPercent) / 100 * item.product.productPrice    
                     }
                 }).catch((err) => {
                     console.log(err)

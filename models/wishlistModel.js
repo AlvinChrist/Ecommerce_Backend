@@ -25,16 +25,6 @@ const Wishlist = db.define('wishlist',{
 
 Wishlist.removeAttribute('id');
 
-User.belongsToMany(Product, { 
-    through: Wishlist,
-    foreignKey: 'userId'
-});
-
-Product.belongsToMany(User, { 
-    through: Wishlist,
-    foreignKey: 'productId'
-});
-
 Wishlist.belongsTo(User, { 
     foreignKey: 'userId' 
 })
