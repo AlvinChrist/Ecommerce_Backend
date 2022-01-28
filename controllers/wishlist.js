@@ -42,9 +42,11 @@ export const getUserWishlist = async(req, res) => {
                         ]
                     }],
                 }).then(detail=>{
-                    let finalrating = detail.product_ratings[0].dataValues.totalRating / detail.product_ratings[0].dataValues.count
+                    let finalrating = 0;
+                    if(detail.product_ratings.length > 0){
+                        finalrating = detail.product_ratings[0].dataValues.totalRating / detail.product_ratings[0].dataValues.count
+                    }
                     item.product.setDataValue('finalRating', finalrating)
-                    
                     const img = {imagePath: detail.product_galleries[0].imagePath}
                     item.product.setDataValue('product_galleries', [img])
 
