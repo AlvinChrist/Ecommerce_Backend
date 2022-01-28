@@ -3,7 +3,6 @@ import Product from "../models/productModel.js";
 import Transaction from "../models/transactionModel.js";
 
 export const addTransaction = (req, res) => {
-
     try {
         let transactionId = 0
         Transaction.create({

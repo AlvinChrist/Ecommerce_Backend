@@ -38,7 +38,7 @@ export const register = async(req, res)=>{
                 address: req.body.address,
                 userName: req.body.userName,
                 password: hashPassword,
-                userAvatar: 'avatars/'+req.file.filename,
+                userAvatar: 'avatars/unknown.png',
                 role: req.body.role
             }).then((resp) => {
                 console.log(resp)
